@@ -59,6 +59,7 @@ async def process_document_endpoint(
 ):
     temp_file_path = f"temp_{file.filename}"
     word_file_path = f"Resumen_{file.filename}"
+
     try:
         # Guardar el archivo subido como temporal
         with open(temp_file_path, "wb") as buffer:
@@ -90,11 +91,18 @@ async def process_document_endpoint(
         )
 
     except Exception as e:
-        # Manejar errores si es necesario
+        # Capturar y manejar el error
+        error_message = f"Hubo un error al procesar el archivo: {str(e)}"
+        
+        # Eliminar archivos temporales si existen
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
-        raise e
-
+        
+        # Devolver un mensaje de error como respuesta
+        raise HTTPException(
+            status_code=500,
+            detail=error_message
+        )
             
     
     
