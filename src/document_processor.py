@@ -23,7 +23,7 @@ from langchain_groq import ChatGroq
 from langchain_ollama import ChatOllama
 from langchain_text_splitters import CharacterTextSplitter
 
-async def process_document(temp_file_path, prompt_user):
+async def process_document(temp_file_path):
 
     loader = Docx2txtLoader(temp_file_path)
     docs = loader.load()
@@ -35,7 +35,7 @@ async def process_document(temp_file_path, prompt_user):
         # llm = ChatOllama(temperature=0, model="llama3")
 
     map_prompt = ChatPromptTemplate.from_messages(
-            [("system", "Haz un resumen en español de lo soguiente como si fueras a exponerlo en una conferencia: {prompt_user} :\\n\\n{context}")]
+            [("system", "Haz un resumen en español de lo soguiente como si fueras a exponerlo en una conferencia :\\n\\n{context}")]
         )
 
     reduce_template = """

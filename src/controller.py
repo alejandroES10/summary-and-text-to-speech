@@ -1,4 +1,4 @@
-import base64
+
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 from fastapi.responses import FileResponse, JSONResponse
 from .audio_processor import text_to_mp3
@@ -39,7 +39,7 @@ async def convert_text_to_audio(request: TextoRequest):
     
     if file_mp3:
         # Devolver el archivo como respuesta
-        response = FileResponse(file_mp3, media_type='audio/mpeg', headers={"Content-Disposition": "attachment; filename=salida.mp3"})
+        response = FileResponse(file_mp3, media_type='audio/mpeg', headers={"Content-Disposition": "attachment; filename=audio_resumen.mp3"})
         
         return response
     else:
@@ -58,7 +58,7 @@ async def process_document_endpoint(
     file: UploadFile = File(...), background_tasks: BackgroundTasks = BackgroundTasks()
 ):
     temp_file_path = f"temp_{file.filename}"
-    word_file_path = f"summary_{file.filename}.docx"
+    word_file_path = f"Resumen_{file.filename}"
     try:
         # Guardar el archivo subido como temporal
         with open(temp_file_path, "wb") as buffer:
@@ -67,11 +67,12 @@ async def process_document_endpoint(
         # Procesar el archivo y generar un resumen
         result = await process_document(temp_file_path)
         final_summary = result['generate_final_summary']['final_summary']
-
+        summary = final_summary.replace('*','')
+        
         # Crear un documento Word con el resumen
         doc = Document()
         doc.add_heading('Resumen del Documento', 0)
-        doc.add_paragraph(final_summary)
+        doc.add_paragraph(summary)
 
         # Guardar el archivo Word
         doc.save(word_file_path)
