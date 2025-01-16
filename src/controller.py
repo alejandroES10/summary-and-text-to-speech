@@ -30,7 +30,7 @@ app.add_middleware(
 )
 
 
-@app.post("/convertir-texto-a-audio/")
+@app.post("/convert-text-to-audio/")
 async def convert_text_to_audio(request: TextoRequest):
     """
     Convierte el texto recibido en un archivo MP3 temporal y lo devuelve.
