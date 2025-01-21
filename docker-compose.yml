@@ -7,5 +7,13 @@ services:
       - "8000:8000"
     environment:
      GROQ_API_KEY: ${GROQ_API_KEY:-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}
+     
+    networks:
+      - school_event_manager_network
+
+
+networks:
+  school_event_manager_network:
+    name: school_event_manager_network
 
 
