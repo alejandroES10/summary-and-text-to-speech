@@ -29,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-
 @app.post("/convert-text-to-audio/")
 async def convert_text_to_audio(request: TextoRequest):
     """
@@ -52,6 +51,7 @@ def remove_file(file_path: str):
     """Elimina un archivo si existe."""
     if os.path.exists(file_path):
         os.remove(file_path)
+
 
 @app.post("/summarize/")
 async def process_document_endpoint(
